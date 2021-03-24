@@ -5,7 +5,7 @@ default_context:
   project_name: "limtest"
   project_slug: "limtest"
   package_name: "limtest"
-  project_short_description: "The limtest project."
+  project_short_description: "The limtest project command line interface."
   release_date: "2021-03-18"
   project_version: "2021.3.0"
   copyright_name: "Dave Dittrich"
