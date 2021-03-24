@@ -1,0 +1,18 @@
+default_context:
+  author_fullname: "Dave Dittrich"
+  author_email: "dave.dittrich@gmail.com"
+  github_username: "davedittrich"
+  project_name: "limtest"
+  project_slug: "limtest"
+  package_name: "limtest"
+  project_short_description: "The limtest project."
+  release_date: "2021-03-18"
+  project_version: "2021.3.0"
+  copyright_name: "Dave Dittrich"
+  copyright_year: "2021"
+  pypi_username: "davedittrich"
+  license: "Apache Software License 2.0"
+  _extensions:
+    - jinja2_time.TimeExtension
+  _copy_without_render:
+    - ".github/workflows/test-build-publish.yml"
