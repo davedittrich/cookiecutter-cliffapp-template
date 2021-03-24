@@ -56,22 +56,17 @@ clean: clean-docs
 clean-docs:
 	cd docs && make clean
 
-
-test:
-	rm -rf /tmp/limtest
-	python3 -m cookiecutter \
-		--config-file tests/cookiecutter-test-defaults.yaml \
-		--no-input \
-		--output-dir /tmp \
-		--overwrite-if-exists \
-		$(shell pwd)
-
 .PHONY: bats-libraries
-bats-libraries: bats bats-support bats-assert
+bats-libraries: bats-core bats-support bats-assert
 
-bats:
-	@[ -d tests/libs/bats ] || \
-		(mkdir -p tests/libs/bats; git clone http://github.com/sstephenson/bats tests/libs/bats)
+bats-core:
+	@if [ ! -d tests/libs/bats-core ]; then \
+		echo "[+] Cloning bats-core from GitHub"; \
+		mkdir -p tests/libs/bats-core; \
+		git clone https://github.com/bats-core/bats-core.git tests/libs/bats-core; \
+		echo "[+] Installing in /usr/local with sudo"; \
+		sudo tests/libs/bats-core/install.sh /usr/local; \
+	 fi
 
 
 bats-support:
