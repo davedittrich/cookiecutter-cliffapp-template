@@ -45,9 +45,18 @@ Quickstart
 
 #. Generate a Python package project::
 
+    $ mkdir ~/git/cliffapp
+    $ cd ~/git/cliffapp
     $ python3 -m cookiecutter https://github.com/davedittrich//cookiecutter-cliffapp-template.git
 
-#. Create a GitHub repo and push it there.
+#. Create a GitHub repo and push it there::
+
+   $ git init
+   $ git add .
+   $ git commit -m "First commit"
+   $ git branch -M main
+   $ git remote add origin git@github.com:davedittrich/cliffapp.git
+   $ git push -u origin main
 
 #. `Register <https://pypi.org/account/register/>`_ your project with PyPI.
 
