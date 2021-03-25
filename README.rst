@@ -2,9 +2,6 @@
 Cookiecutter Cliff App Template
 ===============================
 
-`Cookiecutter <https://github.com/cookiecutter/cookiecutter>`_ Template for a
-Python Cliff command line interface (CLI) package.
-
 |Versions| |Contributors| |License| |Docs|
 .. |Versions| image:: https://img.shields.io/pypi/pyversions/{{cookiecutter.project_slug}}.svg
    :target: https://pypi.org/project/{{cookiecutter.project_slug}}
@@ -16,7 +13,11 @@ Python Cliff command line interface (CLI) package.
    :target: https://{{cookiecutter.project_slug}}.readthedocs.io/en/latest/
 
 
-https://github.com/audreyfeldroy/cookiecutter-pypackage
+`Cookiecutter <https://github.com/cookiecutter/cookiecutter>`_ Template for a
+Python Cliff command line interface (CLI) package.
+
+Version: 2021.3.0
+
 
 Features
 --------
@@ -28,6 +29,7 @@ Features
   generation with, for example, ReadTheDocs_
 * `bump2version <https://github.com/c4urself/bump2version>`_: Pre-configured
   version bumping with a single command
+* Cliff autoprogram `Sphinx integration <https://docs.openstack.org/cliff/latest/user/sphinxext.html>`_ for documenting commands
 * Optional auto-release to `PyPI <https://pypi.org/>`_ or `Test PyPI <https://test.pypi.org>`_
   when you push a new tag to `master` or `develop` (optional)
 

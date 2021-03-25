@@ -1,12 +1,12 @@
 # Makefile for python_secrets
 
-SHELL=bash
-VERSION=$(shell cat VERSION)
+SHELL:=/bin/bash
+VERSION:=$(shell cat VERSION)
 PROJECT:=$(shell basename `pwd`)
 PYTHON=python3
 
 .PHONY: default
-default: test
+default: help
 
 .PHONY: help
 help:
@@ -20,8 +20,15 @@ help:
 	@echo 'docs - build Sphinx docs'
 
 .PHONY: test
+#test: test-tox
 test: test-bats
 	@echo '[+] All tests succeeded'
+
+.PHONY: test-tox
+test-tox:
+	@# See comment in tox.ini file.
+	tox -e pep8 && tox -e py36,py37,py38,bats,pypi
+	@-git checkout ChangeLog || true
 
 .PHONY: test-template
 test-template:
@@ -30,7 +37,6 @@ test-template:
 		--config-file tests/cookiecutter-test-defaults.yaml \
 		--no-input \
 		--output-dir /tmp \
-		--overwrite-if-exists \
 		$(shell pwd)
 
 .PHONY: test-bats
@@ -56,15 +62,22 @@ clean: clean-docs
 clean-docs:
 	cd docs && make clean
 
+#HELP spotless - deep clean
+.PHONY: spotless
+spotless: clean
+	rm -rf .eggs .tox
+	(cd docs && make clean)
+	rm -rf tests/libs/{bats-core,bats-support,bats-assert}
+
 .PHONY: bats-libraries
 bats-libraries: bats-core bats-support bats-assert
 
 bats-core:
-	@if [ ! -d tests/libs/bats-core ]; then \
+	@if ! bats --help | grep -q bats-core || [ ! -d tests/libs/bats-core ]; then \
 		echo "[+] Cloning bats-core from GitHub"; \
 		mkdir -p tests/libs/bats-core; \
 		git clone https://github.com/bats-core/bats-core.git tests/libs/bats-core; \
-		echo "[+] Installing in /usr/local with sudo"; \
+		echo "[+] Installing bats-core in /usr/local with sudo"; \
 		sudo tests/libs/bats-core/install.sh /usr/local; \
 	 fi
 

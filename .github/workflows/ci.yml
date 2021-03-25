@@ -60,9 +60,3 @@ jobs:
         cookiecutter --no-input . package_name=example
     - name: Run tests
       run: make test
-    - name: Check example project
-      run: |
-        cd example
-        pip install -r requirements.txt
-        make install-active
-        make test

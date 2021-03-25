@@ -1,5 +1,5 @@
 default_context:
-  author_fullname: "Dave Dittrich"
+  author: "Dave Dittrich"
   author_email: "dave.dittrich@gmail.com"
   github_username: "davedittrich"
   project_name: "limtest"
