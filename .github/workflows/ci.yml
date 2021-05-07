@@ -1,4 +1,4 @@
-name: Cookicutter template validation workflow
+name: Cookiecutter template validation workflow
 
 on: [ push, pull_request ]
 
@@ -6,6 +6,9 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
     env:
       PY_COLORS: 1
       TOX_PARALLEL_NO_SPINNER: 1
@@ -14,25 +17,31 @@ jobs:
       uses: actions/checkout@v2
       with:
         fetch-depth: 0
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.8
     - uses: conda-incubator/setup-miniconda@v2
       with:
-        auto-activate-base: true
-        python-version: 3.8
+        activate-environment: test
+        allow-softlinks: true
+        auto-activate-base: false
         auto-update-conda: true
+        channels: conda-forge
+        channel-priority: flexible
+        python-version: 3.8
+        show-channel-urls: true
+        use-only-tar-bz2: true
+    - name: About conda
+      run: |
+        conda info
+        conda list
+        conda config --show
+        conda config --show-sources
+        conda config --set always_yes yes --set changeps1 no
     - name: Install dependencies
       run: |
-        conda config --set always_yes yes --set changeps1 no
-        python3 -m pip install tox setuptools>=42 setuptools_scm wheel twine
+        python3 -m pip install tox cookiecutter setuptools>=42 setuptools_scm wheel twine
         [ -f requirements.txt ] && python3 -m pip install -Ur requirements.txt
         [ -f test-requirements.txt ] && python3 -m pip install -Ur test-requirements.txt
-        echo "VERSION=$(python3 setup.py --version)"
         make bats-libraries
-        # Useful for debugging any issues with conda
-        conda info -a
+        echo "VERSION=$(python3 setup.py --version)"
     - name: Get variables
       id: get_vars
       run: |
@@ -59,10 +68,5 @@ jobs:
       run: |
         cookiecutter --no-input . package_name=example
     - name: Run tests
-      run: make test
-    - name: Check example project
       run: |
-        cd example
-        pip install -r requirements.txt
-        make install-active
         make test

@@ -1,0 +1,8 @@
+cliff
+cookiecutter>=1.4.0
+gitpython
+pyyaml
+setuptools>=42
+setuptools_scm
+sphinx
+sphinx_rtd_theme

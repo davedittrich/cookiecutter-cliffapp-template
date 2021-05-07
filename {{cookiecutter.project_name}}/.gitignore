@@ -1,0 +1,3 @@
+build/
+dist/
+{{cookiecutter.project_slug}}.egg-info/

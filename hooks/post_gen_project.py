@@ -1,34 +1,23 @@
 #!/usr/bin/env python3
 
+from git import Repo
 import os
-from pathlib import Path
+import sys
 
 
 project_path = os.path.realpath(os.path.curdir)
-try:
-    project_slug = os.path.split(project_path)[1]
-except IndexError:
-    project_slug = os.path.basename(project_path)
-try:
-    namespace = project_slug.split('.')[0]
-except IndexError:
-    namespace = project_slug
-try:
-    package_name = project_slug.split('.')[1]
-except IndexError:
-    package_name = project_slug
-package_path = os.path.join(project_path, namespace, package_name)
 
 
 def remove_project_file(filepath):
-    p = Path(project_path)  / filepath
-    p.unlink(missing_ok=True)
+    full_path = os.path.join(project_path, filepath)
+    os.remove(full_path)
 
 
-def fix_underlines(dirpath):
+def fix_underlines(dirpath, extensions=['.rst']):
     for root, dirs, files in os.walk(dirpath, topdown=False):
         for name in files:
-            if not name.endswith('.rst'):
+            ext = os.path.splitext(name)[1]
+            if ext not in extensions:
                 continue
             orig_file = os.path.join(root, name)
             tmp_file = orig_file + '.tmp'
@@ -41,13 +30,79 @@ def fix_underlines(dirpath):
                             last_line_len = len(line) - 1
                         else:
                             underline_char = line[0]
-                            f_tmp.write(f'{underline_char * last_line_len}{os.linesep}')
+                            f_tmp.write(f'{underline_char * last_line_len}{os.linesep}')  # noqa
             os.replace(tmp_file, orig_file)
+
+
+def error_for(item, not_valid, valid):
+    return (
+            f"[-] the character{'' if len(not_valid) == 1 else 's'} "
+            f"{','.join(not_valid)}' "
+            f"{'is' if len(not_valid) == 1 else 'are' }"
+            f"not valid in '{item}': use only {valid}"
+        )
+
+
+def validate_name_and_slug():
+    valid_alpha = [chr(i) for i in range(ord('a'), ord('z')+1)]
+    valid_name_chars = valid_alpha + ['-']
+    valid_slug_chars = valid_alpha + ['_']
+    not_valid_in_name = [
+        c for c in '{{cookiecutter.project_name}}'
+        if c not in valid_name_chars
+    ]
+    if len(not_valid_in_name):
+        sys.exit(error_for('project_name', not_valid_in_name, "'a-z' and '-'"))
+    not_valid_in_slug = [
+        c for c in '{{cookiecutter.project_slug}}'
+        if c not in valid_slug_chars
+    ]
+    if len(not_valid_in_slug):
+        sys.exit(error_for('project_slug', not_valid_in_slug, "'a-z' and '_'"))
+
+
+# [1-post_gen_project]
+def initialize_repo():
+    repo = Repo.init(project_path)
+    git = repo.git
+    # Configure repo settings
+    repo.description = '{{cookiecutter.project_short_description}}'
+    repo_url = ('git@github.com:{{cookiecutter.github_username}}/'
+                '{{cookiecutter.project_name}}.git')
+    git.remote('add', 'origin', repo_url)
+    # Configure user settings
+    repo.config_writer().set_value(
+        'user',
+        'name',
+        '{{cookiecutter.author|escape}}').release()
+    repo.config_writer().set_value(
+        'user',
+        'email',
+        '{{cookiecutter.author_email}}').release()
+    # Add all files output by template
+    repo.index.add([
+        filename for filename in os.listdir(project_path)
+        if filename != '.git'
+    ])
+    # Create initial commit on master
+    repo.index.commit('Initial commit')
+    # Set up a 'develop' branch
+    git.checkout('HEAD', b='develop')
+    # Create an initial tag to test package publishing
+    project_version = 'v{{cookiecutter.project_version}}rc1'
+    git.tag('-a', project_version, '-m', project_version)
+    # Leave HEAD on master branch
+    git.checkout('master')
+# ![1-post_gen_project]
 
 
 if __name__ == '__main__':
 
-    if 'Other/Proprietary License' == '{{ cookiecutter.license }}':
+    validate_name_and_slug()
+    if 'Other/Proprietary License' == '{{cookiecutter.license}}':
         remove_project_file('LICENSE')
-    fix_underlines('.')
+    fix_underlines(project_path, extensions=['.rst', '.py'])
+    initialize_repo()
+    sys.exit(0)
 
+# vim: set ts=4 sw=4 tw=0 et :
