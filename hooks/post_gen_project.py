@@ -4,6 +4,13 @@ from git import Repo
 import os
 import sys
 
+from git import Repo
+from tempfile import mkstemp
+from shutil import (
+    copymode,
+    move,
+)
+
 
 project_path = os.path.realpath(os.path.curdir)
 
@@ -32,6 +39,23 @@ def fix_underlines(dirpath, extensions=['.rst']):
                             underline_char = line[0]
                             f_tmp.write(f'{underline_char * last_line_len}{os.linesep}')  # noqa
             os.replace(tmp_file, orig_file)
+
+
+def fix_github_secrets(project_path):
+    workflow_file = os.path.join(project_path,
+                                 '.github',
+                                 'workflows',
+                                 'test-build-publish.yml')
+    fd, tmp_path = mkstemp()
+    with os.fdopen(fd, 'w') as f_out:
+        with open(workflow_file, 'r') as f_in:
+            for line in f_in:
+                f_out.write(
+                    line.replace('@PROJECT@',
+                                 '{{cookiecutter.project_slug.upper()}}'))
+    copymode(workflow_file, tmp_path)
+    os.remove(workflow_file)
+    move(tmp_path, workflow_file)
 
 
 def error_for(item, not_valid, valid):
@@ -102,7 +126,9 @@ if __name__ == '__main__':
     if 'Other/Proprietary License' == '{{cookiecutter.license}}':
         remove_project_file('LICENSE')
     fix_underlines(project_path, extensions=['.rst', '.py'])
+    fix_github_secrets(project_path)
     initialize_repo()
     sys.exit(0)
+
 
 # vim: set ts=4 sw=4 tw=0 et :

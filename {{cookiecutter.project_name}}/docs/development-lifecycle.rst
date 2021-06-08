@@ -1,10 +1,20 @@
 Development Lifecycle Tasks
 ===========================
 
-This section covers the tasks at various stages in the lifecycle of a Python
-project. It starts with initializing the repository directory from a
-``cookiecutter`` template and takes you all the way through to the release
-process on PyPI.
+This section covers tasks related to software development and release.
+
+.. note::
+
+    The intitial text in this section echoes some of the instructions that
+    accompany the `cookiecutter-cliffapp-template`_ template that was used to
+    bootstrap this project. The intent is to help get your Python CLI app up
+    and running while you learn all of the working pieces and begin to control
+    them yourself. At that point, you will want to update this section as you
+    think is appropriate for your situation.
+
+..
+
+.. _cookiecutter-cliffapp-template: https://github.com/davedittrich/cookiecutter-cliffapp-template.git
 
 Development Testing
 -------------------
@@ -16,7 +26,7 @@ to always run tests when you ``push`` to GitHub.
     :start-after: # [1-test-build-publish]
     :end-before: # ![1-test-build-publish]
 
-As you can see, the command it runs is the same one you should run at
+As you can see, the command it runs is the same one you would run at
 the command line to test locally:
 
     .. code-block:: bash
@@ -103,20 +113,24 @@ based on tags.
     :end-before: # ![2-test-build-publish]
 
 You must have first configured GitHub encrypted secrets named
-``PYPI_PASSWORD`` and ``TEST_PYPI_PASSWORD`` before the publish steps
+``{{cookiecutter.project_slug.upper()}}_PYPI_PASSWORD`` and
+``{{cookiecutter.project_slug.upper()}}_TEST_PYPI_PASSWORD`` before the publish steps
 will succeed.
 
 Select *Settings** in your GitHub project page, then select *Secrets*
-from the menu on the left. Create a new secret named *``TEST_PYPI_PASSWORD``*
+from the menu on the left. Create a new secret named
+``{{cookiecutter.project_slug.upper()}}_TEST_PYPI_PASSWORD``
 and open a new browser tab to https://test.pypi.org/ and log into your
 account.
 
-Select *Account settings* from the menu on the left, the create a new token.
-Name the token *``YOURPROJECT_PASSWORD``*, select your project for the scope,
-then *Add token*. You will only be able to see the token value once. Copy
-it and enter it in the *Value* field in the GitHub project window.
+Select **Account settings** on Test PyPI from the menu on the left, then
+then choose **Create a token for {{cookiecutter.project_slug}}**. Use the name
+``{{cookiecutter.project_slug.upper()}}_TEST_PYPI_PASSWORD`` for the token,
+select your project for the scope, then **Add token**. You will only be able to
+see the token value once. Copy it and enter it in the **Value** field in the
+GitHub project window.
 
-Repeat the same process for PyPI using *``PYPI_PASSWORD``*
+Repeat the same process for PyPI using ``{{cookiecutter.project_slug.upper()}}_PYPI_PASSWORD``.
 
 For Every Release
 ~~~~~~~~~~~~~~~~~

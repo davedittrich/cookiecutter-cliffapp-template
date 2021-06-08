@@ -15,6 +15,7 @@ help:
 	@echo 'test - run all tests'
 	@echo 'test-tooling - run tests of cookiecutter-cliffapp tooling'
 	@echo 'test-baking - run tests for baked cliff app'
+	@echo 'test-template - produce /tmp/mycliffapp from template'
 	@echo 'clean - remove build artifacts'
 	@echo 'spotless - deep clean'
 	@echo 'docs-tests - generate bats test output for documentation'
@@ -41,7 +42,7 @@ test-baking:
 
 .PHONY: test-template
 test-template:
-	rm -rf /tmp/limtest
+	rm -rf /tmp/mycliffapp
 	$(PYTHON) -m cookiecutter \
 		--config-file tests/cookiecutter-test-defaults.yaml \
 		--no-input \
@@ -92,7 +93,7 @@ twine-check: sdist bdist_egg bdist_wheel
 .PHONY: clean
 clean: clean-docs
 	$(PYTHON) setup.py clean
-	rm -rf /tmp/limtest
+	rm -rf /tmp/mycliffapp
 	rm -rf dist build *.egg-info
 	find . -name '*.pyc' -delete
 

@@ -6,6 +6,21 @@ import subprocess
 from cookiecutter.utils import rmtree
 from contextlib import contextmanager
 
+# List of tuples with a list of file path components (to be joined at
+# runtime with project directory) and a string that should be found
+# in the file.
+
+CONTENTS = [
+    (
+        ["README.rst"],
+        "Version: "
+    ),
+    (
+        [".github", "workflows", "test-build-publish.yml"],
+        "COOKIECUTTER_CLIFFAPP_TEST_PYPI_PASSWORD"
+    ),
+]
+
 
 @contextmanager
 def inside_dir(dirpath):
@@ -94,19 +109,26 @@ def test_bake_with_defaults(cookies):
         assert 'cookiecutter-cliffapp' in found_bin_files
 
 
+def test_bake_with_defaults_contents(cookies):
+    with bake_in_temp_dir(cookies) as result:
+        for path_components, file_contains in CONTENTS:
+            file_contents = result.project.join(*path_components).read()  # noqa
+            assert file_contains in file_contents
+
+
 def test_bake_with_nameoverride(cookies):
     with bake_in_temp_dir(
         cookies,
-        extra_context={"project_name": "limtest"}
+        extra_context={"project_name": "mycliffapp"}
     ) as result:
         assert result.exit_code == 0
         assert result.exception is None
-        assert result.project.basename == 'limtest'
+        assert result.project.basename == 'mycliffapp'
         assert result.project.isdir()
 
         found_toplevel_files = [f.basename for f in result.project.listdir()]
         assert 'setup.py' in found_toplevel_files
-        assert 'limtest' in found_toplevel_files
+        assert 'mycliffapp' in found_toplevel_files
         assert 'tox.ini' in found_toplevel_files
         assert 'tests' in found_toplevel_files
 
@@ -114,13 +136,13 @@ def test_bake_with_nameoverride(cookies):
             f.basename
             for f in result.project.join('tests').listdir()
         ]
-        assert 'test_limtest-example.py' in found_testlevel_files
+        assert 'test_mycliffapp-example.py' in found_testlevel_files
 
         found_bin_files = [
             f.basename
             for f in result.project.join('bin').listdir()
         ]
-        assert 'limtest' in found_bin_files
+        assert 'mycliffapp' in found_bin_files
 
 
 def test_bake_bad_project_names(cookies):
@@ -145,9 +167,8 @@ def test_bake_and_validate_env_vars(cookies):
     with bake_in_temp_dir(cookies) as result:
         assert result.project.isdir()
         for file_name in ['__init__.py', '__main__.py']:
-            file_contents = result.project.join(
-                'cookiecutter_cliffapp',
-                file_name).read()
+            file_contents = result.project.join('cookiecutter_cliffapp',
+                                                file_name).read()
             assert "COOKIECUTTERCLIFFAPP_DATA_DIR" in file_contents
 
 
@@ -212,3 +233,4 @@ def test_bake_not_open_source(cookies):
 
 
 # vim: set ts=4 sw=4 tw=0 et :
+
