@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-from git import Repo
 import os
 import sys
 

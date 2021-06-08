@@ -233,4 +233,3 @@ def test_bake_not_open_source(cookies):
 
 
 # vim: set ts=4 sw=4 tw=0 et :
-
