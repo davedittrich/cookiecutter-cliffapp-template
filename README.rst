@@ -14,7 +14,7 @@ Cookiecutter ``cliff`` App Template
    :target: https://cookiecutter-cliffapp-template.readthedocs.io
 
 
-`Cookiecutter <https://github.com/cookiecutter/cookiecutter>`_ Template for a
+`Cookiecutter <https://github.com/cookiecutter/cookiecutter>`_ template for a
 Python ``cliff`` command line interface (CLI) package.
 
 Version: 2021.3.0
