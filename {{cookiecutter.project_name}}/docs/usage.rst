@@ -67,8 +67,9 @@ Logging
 
 Cliff also includes a mechanism for writing log output from the program
 to a user-specified file at runtime.  This is useful for debugging, as well
-as for monitoring long-running actions.  Here is an example of logging
-output of the ``about`` command::
+as for monitoring long-running actions.
+
+Here is an example of logging output of the ``about`` command::
 
     $ {{cookiecutter.project_name}} -vvvv --log-file logfile about
     initialize_app
@@ -87,6 +88,9 @@ output of the ``about`` command::
     License:   Apache Software License 2.0
     URL:       https://pypi.python.org/pypi/{{cookiecutter.project_name}}
     [!] clean_up About
+
+Here is what the output would look like::
+
     $ cat logfile
     [2021-06-08 14:31:57,050] DEBUG    mycliffapp initialize_app
     [2021-06-08 14:31:57,051] INFO     mycliffapp [+] command line: /usr/local/Caskroom/miniconda/base/envs/test/bin/{{cookiecutter.project_name}} -vvvv --log-file logfile about
@@ -94,6 +98,9 @@ output of the ``about`` command::
     [2021-06-08 14:31:57,073] DEBUG    mycliffapp [!] clean_up About
 
 ..
+
+Command groups
+--------------
 
 About
 -----

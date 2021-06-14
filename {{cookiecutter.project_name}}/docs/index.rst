@@ -6,14 +6,14 @@
 {% set short_description = cookiecutter.project_short_description[0].lower() + cookiecutter.project_short_description[1:].rstrip('.') %}
 
 .. meta::
-   :description: Python CLI for {{cookiecutter.project_short_description}}
+   :description: {{cookiecutter.project_short_description}}
    :robots: index, follow
    :keywords: python, cli, app, cliff, {{cookiecutter.project_slug}}
 
 {{ cookiecutter.project_name }}
 ==FIX_UNDERLINE==
 
-This document (version |release|) describes the {{short_description}}
+This document (version |release|) describes {{short_description}}
 (``{{cookiecutter.project_name}}`` for short).
 
 .. toctree::
