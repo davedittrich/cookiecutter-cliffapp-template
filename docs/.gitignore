@@ -1,1 +1,2 @@
 build/
+{{cookiecutter.project_slug}}-help.txt

@@ -1,3 +1,5 @@
+.vscode/
 build/
+.tox/
 dist/
 {{cookiecutter.project_slug}}.egg-info/

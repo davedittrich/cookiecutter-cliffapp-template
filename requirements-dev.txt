@@ -1,5 +1,8 @@
+cookiecutter>=1.4.0
 flake8>=3.8.3
 gitpython
-tox
+tox>=3.23.0
+twine==3.3.0
+pep517==0.9.1
 pytest>=5.4.3
 pytest-cookies>=0.5.1

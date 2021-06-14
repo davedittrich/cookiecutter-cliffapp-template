@@ -44,6 +44,7 @@ bin
 docs
 mycliffapp
 pytest.ini
+requirements-dev.txt
 requirements.txt
 secrets.d
 setup.cfg
