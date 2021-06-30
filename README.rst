@@ -94,8 +94,10 @@ Quickstart
 
 .. attention::
 
-   *Sticks and stone may break your bones, but namespace clashes will really
-   mess you up!*
+   .. epigraph::
+
+       *Sticks and stones may break your bones, but namespace clashes will
+       really mess you up!*
 
    You won't have an issue with namespace clashes between projects on GitHub
    where projects start with your account name (e.g.,
