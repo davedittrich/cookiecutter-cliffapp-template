@@ -19,6 +19,8 @@ Python ``cliff`` command line interface (CLI) package.
 
 Version: 2021.3.0
 
+.. [README-Features]
+
 Features
 --------
 
@@ -61,32 +63,200 @@ Features
     `Test PyPI <https://test.pypi.org>`_ when you push a new version tag on the ``master`` branch or
     a special ``rc`` tag on the ``develop`` branch.
 
+.. ![README-Features]
+
+
+.. [README-Quickstart]
+
+These instructions assume you will be doing all of the following:
+
+* Maintaining your source code repository on `GitHub <https://github.com>`_
+  and using `GitHub Actions <https://docs.github.com/en/actions>`_ workflows
+  for driving testing and package publication;
+
+* Publishing full releases of your project as Python packages to `PyPI <https://pypi.org>`_
+  and candidate or test releases to `Test PyPI <https://test.pypi.org>`_; and
+
+* Publishing documentation for your project on `ReadTheDocs <https://readthedocs.com>`_.
+
+
+.. note::
+
+    Future releases of this template *may* support opting out of one or more
+    of the features currently set up by the template. Feel free to submit a
+    `Pull Request <https://github.com/davedittrich/cookiecutter-cliffapp-template/pulls>`_
+    for consideration!
+
+..
 
 Quickstart
 ----------
 
-#. Start with naming your project.
+.. attention::
 
-   You won't have an issue with namespace clashes between projects on GitHub,
-   but PyPI, Test PyPI, and ReadTheDocs have flat namespaces and the name you
-   want to use for your Python app may already be in use by someone else. Before
-   creating your new project, check to make sure the same name is available on all
-   of these services.
+   *Sticks and stone may break your bones, but namespace clashes will really
+   mess you up!*
 
-   Once you have settled on a usable name, make sure you have done the following:
+   You won't have an issue with namespace clashes between projects on GitHub
+   where projects start with your account name (e.g.,
+   ``davedittrich/python_secrets``), but PyPI, Test PyPI, and ReadTheDocs have
+   flat namespaces and the name you want to use for your Python app may already
+   be in use by someone else.
 
-   #. Register an account on both `PyPI <https://pypi.org/account/register/>`_ and
-      `Test PyPI <https://test.pypi.org/account/register/>`_ and
-      `set up <https://packaging.python.org/specifications/pypirc/>`_  your
-      ``~/.pypirc`` file to access both services.
+   Before creating your new project, check to make sure *the same name is
+   available* on all of these services.
 
-   #. Register an account on ReadTheDocs_ and
-      `connect it to your GitHub account <https://readthedocs.org/accounts/social/connections/>`_.
+..
 
-   #. Create a new bare GitHub repo for the project that you can push with ``git``
-      using SSH.
+..   Once you have settled on a usable project name, make sure you have done the following:
+..
+..   #. Register an account on both `PyPI <https://pypi.org/account/register/>`_ and
+..      `Test PyPI <https://test.pypi.org/account/register/>`_ and
+..      `set up <https://packaging.python.org/specifications/pypirc/>`_  your
+..      ``~/.pypirc`` file to access both services.
+..
+..   #. Register an account on `ReadTheDocs <https://readthedocs.com>`_ and
+..      `connect it to your GitHub account <https://readthedocs.org/accounts/social/connections/>`_.
+..
+..   #. Create a new bare GitHub repo for the project that you can push with ``git``
+..      using SSH.
 
-#. `Miniconda <https://docs.conda.io/en/latest/miniconda.html>`_ provides the most
+
+Preparing your accounts
+~~~~~~~~~~~~~~~~~~~~~~~
+
+If you haven't do so yet, you will need to create an account on each of the
+services mentioned above.  The service accounts will be linked in order for
+commits pushed to GitHub to in turn push out new documentation and/or packages.
+
+.. admonition:: TL;DR
+
+    * Create projects on ReadTheDocs, PyPI and Test PyPI
+    * Create tokens on PyPI and Test PyPI
+    * Store tokens from PyPI and Test PyPI as `encrypted secrets on GitHub`_.
+
+Integration of the services involved is accomplished by enabling the integration
+in one or both of the services involved, or by creating an access token on
+service ``A`` and storing that token on service ``B`` to authenticate connections
+at a later time from ``B`` back to service ``A``.
+
+.. _encrypted secrets on GitHub: https://docs.github.com/en/actions/reference/encrypted-secrets
+
+PyPI and Test PyPI
+~~~~~~~~~~~~~~~~~~
+
+.. admonition:: TL;DR
+
+    * Set up your accounts (if necessary)
+    * Create a project
+    * Create a token
+
+* `Python Packaging User Guide`_
+* `Packaging Python Projects`_
+* `How to Publish an Open-Source Python Package to PyPI`_, by Geir Arne Hjelle, RealPython
+* `How to upload your python package to PyPi`_, by joelbarmettlerUZH, Medium, May 7, 2018
+
+.. _Python Packaging Index: https://pypi.org/
+.. _Python Packaging User Guide: https://packaging.python.org/
+.. _Packaging Python Projects: https://packaging.python.org/tutorials/packaging-projects/
+.. _How to Publish an Open-Source Python Package to PyPI: https://realpython.com/pypi-publish-python-package/
+.. _How to upload your python package to PyPi: https://medium.com/@joel.barmettler/how-to-upload-your-python-package-to-pypi-65edc5fe9c56
+
+
+ReadTheDocs
+~~~~~~~~~~~
+
+.. admonition:: TL;DR
+
+    * Set up your account (if necessary)
+    * Create a project
+    * Generate an integration to use as a webhook from GitHub
+
+
+https://readthedocs.org/dashboard/import/manual/?
+
+The ``.readthedocs.yml`` file includes configuration settings that
+control the documentation build process.
+
+
+GitHub
+~~~~~~
+
+.. admonition:: TL;DR
+
+    * Create a new project
+    * Enable Dependabot checking on the Security tab for your project
+    * Set a webhook for linking to ReadTheDocs
+
+
+* Setting up a `PyPI project <https://pypi.org>`_ where you will release your
+  project as a Python package, and a parallel
+  `Test PyPI <https://test.pypi.org>`_ project for releasing test packages.
+* Setting up a `GitHub repository <https://docs.github.com/en/github/getting-started-with-github/create-a-repo>`_
+  for your project.
+* Setting up a `ReadTheDocs documentation project <https://github.com/readthedocs/readthedocs.org#quickstart-for-github-hosted-projects>`_
+  that is connected to the GitHub repository.
+* Using `GitHub Actions <https://docs.github.com/en/actions>`_ workflows for
+  continuous integration testing and publishing your PyPI/test PyPI packages.
+
+See also:
+
+* `Packaging Python Projects <https://packaging.python.org/tutorials/packaging-projects/>`_, PyPA
+* `How to Publish an Open-Source Python Package to PyPI <https://realpython.com/pypi-publish-python-package/>`_, RealPython
+
+
+Baking the project
+------------------
+
+Now that all the accounts are set up, you are ready to bake the
+project!
+
+
+.. Note that this text is duplicative of the equivalent file in the
+   template directory. Ensure changes are reflected there.
+
+When you first create your Python package directory with ``cookiecutter``
+using this template, it will prompt you to enter values for the variables below
+before using them to generate your initial project directory.
+
+``author``
+    Your full name
+``author_email``
+    Your email address
+``github_username``
+    Your GitHub username
+``project_name``
+    The name of your new Python package project. This is used to to create the
+    namespace, the package name, and the command name you will type at the
+    console. It should be short and only contain lowercase characters ``a-z``
+    and the dash (``-``) character.
+``project_slug``
+    The name of your Python package on PyPi. This name will have dashes converted
+    to underscore characters (``_``) for use by ``import`` and variable names.
+``project_short_description``
+    A 1-sentence description of what your Python package is and does.
+``release_date``
+    The date of the first release (*YYYY-MM-DD* format).
+``project_version``
+    The starting version number of the package (defaults to *YYYY.MM.0* format).
+``copyright_name``
+    Name of copyright holder (defaults to ``author``).
+``copyright_year``
+    The year of the initial package copyright in the license file (defaults
+    to the current year).
+``pypi_username``
+    Your Python Package Index account username for both PyPI and Test PyPI.
+``license``
+    The chosen license.
+
+.. note::
+
+   If any of these are not exactly what you need, just chose something (or accept
+   the default) and change it after ``cookiecutter`` has rendered files from the
+   template.
+
+
+#. `Miniconda <https://docs.conda.io/en/latest/miniconda.html>`_ provides a
    consistent Python virtual environment experience across Mac OSX, Windows 10,
    and Linux (either native, or on Windows 10 using
    `Windows Subsystem for Linux (WSL2) <https://docs.microsoft.com/en-us/windows/wsl/about>`_).
@@ -183,7 +353,7 @@ Quickstart
    tests (but not trigger any release publication at this point.)
 
 #. Manually release your first test package to Test PyPI from the new repo
-   directory. This initializes the project (which needs to be done _before_
+   directory. This initializes the project (which needs to be done *before*
    you can create API tokens). You can use this command::
 
        $ make release-test
@@ -228,13 +398,16 @@ Quickstart
    GitHub Actions workflow will publish the package on PyPI (after the tests
    succeed, of course).
 
+.. ![README-Quickstart]
+
 
 Pull requests
-~~~~~~~~~~~~~
+-------------
 
 If you have major differences in your preferred setup, I encourage you to fork this
-repo to create your own version. I also accept Pull Requests on this, if they’re
-small, atomic, and if they make my own packaging experience better.
+repo to create your own version. I also accept `Pull Requests <https://github.com/davedittrich/cookiecutter-cliffapp-template/pulls>`_
+on this repo, if they’re small, atomic, and if they make my own packaging experience
+better.
 
 Credits
 -------
