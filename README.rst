@@ -9,7 +9,7 @@ Cookiecutter ``cliff`` App Template
 .. |Contributors| image:: https://img.shields.io/github/contributors/davedittrich/cookiecutter-cliffapp-template.svg
    :target: https://github.com/davedittrich/cookiecutter-cliffapp-template/graphs/contributors
 .. |License| image:: https://img.shields.io/github/license/davedittrich/cookiecutter-cliffapp-template.svg
-   :target: https://github.com/davedittrich//cookiecutter-cliffapp-template/blob/master/LICENSE
+   :target: https://github.com/davedittrich//cookiecutter-cliffapp-template/blob/main/LICENSE
 .. |Docs| image:: https://readthedocs.org/projects/cookiecutter-cliffapp-template/badge/?version=latest
    :target: https://cookiecutter-cliffapp-template.readthedocs.io
 
@@ -34,7 +34,7 @@ Features
   feed into other tools or automation platforms.
 
 * Immediately after ``cookiecutter`` generates the app directory, it sets up the Git
-  repository for your new app with ``master`` and ``develop`` branches and an initial
+  repository for your new app with ``main`` and ``develop`` branches and an initial
   version tag, ready to push to GitHub.
 
   The app directory is also pre-configured with these features ready to go:
@@ -60,7 +60,7 @@ Features
     `GitHub Actions <https://docs.github.com/en/actions/learn-github-actions/introduction-to-github-actions>`_.
 
   * The GitHub Actions workflow will also auto-release packages to `PyPI <https://pypi.org/>`_ or
-    `Test PyPI <https://test.pypi.org>`_ when you push a new version tag on the ``master`` branch or
+    `Test PyPI <https://test.pypi.org>`_ when you push a new version tag on the ``main`` branch or
     a special ``rc`` tag on the ``develop`` branch.
 
 .. ![README-Features]
@@ -300,15 +300,15 @@ before using them to generate your initial project directory.
     Choose from 1, 2, 3, 4, 5, 6 [1]: 4
     $ cd cookiecutter-cliffapp
 
-   As you can see, the repo is all set up with ``develop`` and ``master``
-   branches, with the ``master`` branch checked out and ready to push to
+   As you can see, the repo is all set up with ``develop`` and ``main``
+   branches, with the ``main`` branch checked out and ready to push to
    GitHub!::
 
     $ git remote -v
     origin  git@github.com:davedittrich/cookiecutter-cliffapp.git (fetch)
     origin  git@github.com:davedittrich/cookiecutter-cliffapp.git (push)
     $ git log
-    commit 42fd5b4405d54b87fc62255da47ff1cfa0449b81 (HEAD -> master, tag: v2021.3.0rc1, develop)
+    commit 42fd5b4405d54b87fc62255da47ff1cfa0449b81 (HEAD -> main, tag: v2021.3.0rc1, develop)
     Author: Dave Dittrich <dave.dittrich@gmail.com>
     Date:   Mon Mar 29 19:18:40 2021 -0700
 
@@ -324,8 +324,8 @@ before using them to generate your initial project directory.
 
        Which branch should be used for tracking production releases?
           - develop
-          - master
-       Branch name for production releases: [master]
+          - main
+       Branch name for production releases: [main]
 
        Which branch should be used for integration of the "next release"?
           - develop
@@ -339,7 +339,7 @@ before using them to generate your initial project directory.
        Version tag prefix? []
        . . .
        To github.com:davedittrich/cookiecutter-cliffapp.git
-        * [new branch]      master -> master
+        * [new branch]      main -> main
 
    * Using Git commands directly::
 

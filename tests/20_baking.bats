@@ -33,6 +33,9 @@ teardown() {
         $TEMPLATE_SOURCE
     assert_success
     [ -d $BATS_RUN_TMPDIR/mycliffapp ]
+    run bash -c "cd $BATS_RUN_TMPDIR/mycliffapp && git branch -a"
+    assert_output "  develop
+* main"
     run bash -c "cd $BATS_RUN_TMPDIR/mycliffapp && ls -1"
     assert_output "AUTHORS.rst
 LICENSE

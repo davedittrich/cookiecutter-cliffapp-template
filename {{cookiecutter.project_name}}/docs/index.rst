@@ -1,4 +1,4 @@
-.. {{ cookiecutter.project_slug }} documentation master file, created by
+.. {{ cookiecutter.project_slug }} documentation main file, created by
 .. cookiecutter on {{ cookiecutter.release_date }}.
 .. You can adapt this file completely to your liking, but it should at least
 .. contain the root `toctree` directive.

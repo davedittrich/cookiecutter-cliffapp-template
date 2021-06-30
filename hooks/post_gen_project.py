@@ -86,7 +86,7 @@ def validate_name_and_slug():
 
 # [1-post_gen_project]
 def initialize_repo():
-    repo = Repo.init(project_path)
+    repo = Repo.init(project_path, initial_branch='main')
     git = repo.git
     # Configure repo settings
     repo.description = '{{cookiecutter.project_short_description}}'
@@ -107,15 +107,15 @@ def initialize_repo():
         filename for filename in os.listdir(project_path)
         if filename != '.git'
     ])
-    # Create initial commit on master
+    # Create initial commit on main
     repo.index.commit('Initial commit')
-    # Set up a 'develop' branch
+    # Set up a 'develop' branch ala 'git hf' command
     git.checkout('HEAD', b='develop')
     # Create an initial tag to test package publishing
     project_version = 'v{{cookiecutter.project_version}}rc1'
     git.tag('-a', project_version, '-m', project_version)
-    # Leave HEAD on master branch
-    git.checkout('master')
+    # Leave HEAD on main branch
+    git.checkout('main')
 # ![1-post_gen_project]
 
 

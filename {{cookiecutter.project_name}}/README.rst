@@ -1,5 +1,5 @@
 {% set is_open_source = cookiecutter.license != 'Other/Proprietary License' -%}
-.. {{cookiecutter.project_slug}} documentation master file, created by
+.. {{cookiecutter.project_slug}} documentation main file, created by
    cookiecutter on {{cookiecutter.release_date}}.
 
 {{cookiecutter.project_name}}
@@ -13,7 +13,7 @@
    :target: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/graphs/contributors
 {%- if is_open_source %}
 .. |License| image:: https://img.shields.io/github/license/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}.svg
-   :target: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}/blob/master/LICENSE
+   :target: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}/blob/main/LICENSE
 {% endif -%}
 .. |Docs| image:: https://readthedocs.org/projects/{{cookiecutter.project_name}}/badge/?version=latest
    :target: https://{{cookiecutter.project_name}}.readthedocs.io
@@ -53,7 +53,7 @@ Features
 * Set up for `GitHub Actions <https://docs.github.com/en/actions/learn-github-actions/introduction-to-github-actions>`_
   workflow processing for automatic testing.
 * The GitHub Actions workflow will also auto-release packages to `PyPI <https://pypi.org/>`_ or
-  `Test PyPI <https://test.pypi.org>`_ when you push a new version tag on the ``master`` branch, or a
+  `Test PyPI <https://test.pypi.org>`_ when you push a new version tag on the ``main`` branch, or a
   special ``rc`` tag on the ``develop`` branch.
 
 

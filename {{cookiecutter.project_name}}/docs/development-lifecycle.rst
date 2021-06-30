@@ -274,7 +274,7 @@ Full releases are more involved.
 
 First make sure that all tests pass and that you are satisfied all code and
 documentation changes are ready. Then merge all the new commits into the
-``master`` branch and resolve any merge conflicts.
+``main`` branch and resolve any merge conflicts.
 
 If you are using the Git `HubFlow
 <https://datasift.github.io/gitflow/TheHubFlowTools.html>`_ tool, you will now
@@ -308,7 +308,7 @@ two cases we need to consider in terms of choosing the new release number.
 If you are using the Git `HubFlow
 <https://datasift.github.io/gitflow/TheHubFlowTools.html>`_ tool, do your
 normal ``release finish`` and it will handle the tagging and pushing.
-Otherwise, manually tag and push the ``master`` branch and associated tag::
+Otherwise, manually tag and push the ``main`` branch and associated tag::
 
     $ git tag -a v$(cat VERSION)
     $ git push && git push --tags
