@@ -4,6 +4,7 @@ import os
 import sys
 
 from git import Repo
+from git.exc import GitCommandError
 from tempfile import mkstemp
 from shutil import (
     copymode,
@@ -86,7 +87,7 @@ def validate_name_and_slug():
 
 # [1-post_gen_project]
 def initialize_repo():
-    repo = Repo.init(project_path, initial_branch='main')
+    repo = Repo.init(project_path)
     git = repo.git
     # Configure repo settings
     repo.description = '{{cookiecutter.project_short_description}}'
@@ -109,6 +110,10 @@ def initialize_repo():
     ])
     # Create initial commit on main
     repo.index.commit('Initial commit')
+    try:
+        git.branch('-m', 'master', 'main')
+    except GitCommandError:
+        pass
     # Set up a 'develop' branch ala 'git hf' command
     git.checkout('HEAD', b='develop')
     # Create an initial tag to test package publishing
