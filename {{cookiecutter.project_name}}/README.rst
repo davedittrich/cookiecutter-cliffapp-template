@@ -13,7 +13,7 @@
    :target: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/graphs/contributors
 {%- if is_open_source %}
 .. |License| image:: https://img.shields.io/github/license/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}.svg
-   :target: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}/blob/main/LICENSE
+   :target: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}/blob/main/LICENSE.txt
 {% endif -%}
 .. |Docs| image:: https://readthedocs.org/projects/{{cookiecutter.project_name}}/badge/?version=latest
    :target: https://{{cookiecutter.project_name}}.readthedocs.io

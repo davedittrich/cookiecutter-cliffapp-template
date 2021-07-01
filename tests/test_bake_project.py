@@ -78,7 +78,7 @@ def project_info(result):
 
 def test_year_compute_in_license_file(cookies):
     with bake_in_temp_dir(cookies) as result:
-        license_file_path = result.project.join('LICENSE')
+        license_file_path = result.project.join('LICENSE.txt')
         now = datetime.datetime.now()
         assert str(now.year) in license_file_path.read()
 
@@ -214,7 +214,7 @@ def test_bake_selecting_license(cookies):
             cookies,
             extra_context={"license": license}
         ) as result:
-            assert target_string in result.project.join('LICENSE').read()
+            assert target_string in result.project.join('LICENSE.txt').read()
             assert license in result.project.join(
                 'cookiecutter_cliffapp', '__init__.py').read()
             assert 'Private :: Do Not Upload' not in result.project.join('setup.cfg').read()  # noqa
@@ -227,7 +227,7 @@ def test_bake_not_open_source(cookies):
     ) as result:
         found_toplevel_files = [f.basename for f in result.project.listdir()]
         assert 'setup.py' in found_toplevel_files
-        assert 'LICENSE' not in found_toplevel_files
+        assert 'LICENSE.txt' not in found_toplevel_files
         assert 'Proprietary license' in result.project.join('README.rst').read()  # noqa
         assert 'Private :: Do Not Upload' in result.project.join('setup.cfg').read()  # noqa
 

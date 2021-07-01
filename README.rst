@@ -9,7 +9,7 @@ Cookiecutter ``cliff`` App Template
 .. |Contributors| image:: https://img.shields.io/github/contributors/davedittrich/cookiecutter-cliffapp-template.svg
    :target: https://github.com/davedittrich/cookiecutter-cliffapp-template/graphs/contributors
 .. |License| image:: https://img.shields.io/github/license/davedittrich/cookiecutter-cliffapp-template.svg
-   :target: https://github.com/davedittrich//cookiecutter-cliffapp-template/blob/main/LICENSE
+   :target: https://github.com/davedittrich//cookiecutter-cliffapp-template/blob/main/LICENSE.txt
 .. |Docs| image:: https://readthedocs.org/projects/cookiecutter-cliffapp-template/badge/?version=latest
    :target: https://cookiecutter-cliffapp-template.readthedocs.io
 

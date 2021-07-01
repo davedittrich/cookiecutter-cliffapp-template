@@ -128,7 +128,7 @@ if __name__ == '__main__':
 
     validate_name_and_slug()
     if 'Other/Proprietary License' == '{{cookiecutter.license}}':
-        remove_project_file('LICENSE')
+        remove_project_file('LICENSE.txt')
     fix_underlines(project_path, extensions=['.rst', '.py'])
     fix_github_secrets(project_path)
     initialize_repo()
