@@ -38,7 +38,7 @@ teardown() {
 * main"
     run bash -c "cd $BATS_RUN_TMPDIR/mycliffapp && ls -1"
     assert_output "AUTHORS.rst
-LICENSE
+LICENSE.txt
 Makefile
 README.rst
 VERSION
