@@ -65,7 +65,6 @@ Features
 
 .. ![README-Features]
 
-
 .. [README-Quickstart]
 
 These instructions assume you will be doing all of the following:
@@ -273,7 +272,7 @@ before using them to generate your initial project directory.
    or higher is required) into your chosen Python virtual environment::
 
     $ conda activate cliffapp
-    $ python3 -m pip install -U cookiecutter
+    $ python3 -m pip install -U cookiecutter gitpython
 
 #. In the directory where you keep your Git repos, use ``cookiecutter`` to generate
    a new Git repo directory for your Python package project (changing the answers to
