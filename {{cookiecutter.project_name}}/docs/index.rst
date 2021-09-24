@@ -3,7 +3,7 @@
 .. You can adapt this file completely to your liking, but it should at least
 .. contain the root `toctree` directive.
 
-{% set short_description = cookiecutter.project_short_description[0].lower() + cookiecutter.project_short_description[1:].rstrip('.') %}
+{% set short_description = cookiecutter.project_short_description[0].lower() + cookiecutter.project_short_description[1:].rstrip('.') -%}
 
 .. meta::
    :description: {{cookiecutter.project_short_description}}
