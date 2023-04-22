@@ -5,7 +5,7 @@ on: [ push, pull_request ]
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     defaults:
       run:
         shell: bash -l {0}
@@ -14,9 +14,13 @@ jobs:
       TOX_PARALLEL_NO_SPINNER: 1
     steps:
     - name: Check out src from GitHub
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3.5.2
       with:
         fetch-depth: 0
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: 3.9.16
     - uses: conda-incubator/setup-miniconda@v2
       with:
         activate-environment: test
@@ -25,7 +29,7 @@ jobs:
         auto-update-conda: true
         channels: conda-forge
         channel-priority: flexible
-        python-version: 3.8
+        python-version: 3.9.16
         show-channel-urls: true
         use-only-tar-bz2: true
     - name: About conda
