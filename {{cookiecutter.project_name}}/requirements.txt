@@ -1,8 +1,8 @@
 cliff
-pytest==5.4.3
-pytest-cookies==0.5.1
-watchdog==2.0.2
-alabaster==0.7.12
+pytest
+pytest-cookies
+watchdog
+alabaster
 setuptools>=42
 setuptools_scm
 python_secrets

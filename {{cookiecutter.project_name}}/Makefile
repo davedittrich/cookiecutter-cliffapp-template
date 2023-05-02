@@ -46,7 +46,7 @@ test: test-tox
 test-tox:
 	@if [ -f .python_secrets_environment ]; then (echo '[!] Remove .python_secrets_environment prior to testing'; exit 1); fi
 	@# See comment in tox.ini file.
-	tox -e pep8,bandit,docs && tox -e py36,py37,py38,bats,pypi
+	tox -e pep8,bandit,docs && tox -e py39,py310,py311,bats,pypi
 	@-[[ -f ChangeLog ]] && git checkout ChangeLog || true
 
 .PHONY: test-bats

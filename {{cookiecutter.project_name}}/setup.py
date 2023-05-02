@@ -14,16 +14,18 @@ from setuptools import (
 )
 from setuptools_scm import get_version
 
+
 # HTTPError: 400 Bad Request from https://test.pypi.org/legacy/
 # '2021.9.0rc2.dev1+g25971ae.d20210924' is an invalid value for Version.
 # Error: Can't use PEP 440 local versions.
-# See https://packaging.python.org/specifications/core-metadata for more information.
+# See https://packaging.python.org/specifications/core-metadata
+# for more information.
+
 
 def local_scheme(version):
     return ""
 
 ###################################################################
-
 ###################################################################
 
 with open("README.rst", "r") as fh:

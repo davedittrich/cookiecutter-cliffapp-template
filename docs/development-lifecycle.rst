@@ -36,7 +36,7 @@ There are several levels of testing you may want to perform.
 * You can do unit testing and runtime integration testing of your code
   against several versions of Python using ``tox`` directly like this::
 
-    $ tox -e py36,py37,py38,py39
+    $ tox -e py39,py310,py311
 
 * You can do runtime integration testing of your code using ``bats``
   via ``tox`` like this::

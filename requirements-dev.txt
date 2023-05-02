@@ -1,7 +1,7 @@
-cookiecutter>=1.4.0
-flake8>=3.8.3
+cookiecutter>=2.1.1
+flake8
 gitpython
-tox>=3.23.0
-twine==3.3.0
-pytest>=5.4.3
-pytest-cookies>=0.5.1
+tox
+twine
+pytest
+pytest-cookies>=0.7.0

@@ -36,7 +36,7 @@ test-tooling:
 .PHONY: test-baking
 test-baking:
 	@# See comment in tox.ini file.
-	tox -e py36,py37,py38
+	tox -e py39,py310,py311
 	$(MAKE) test-bats
 	@-[[ -f ChangeLog ]] && git checkout ChangeLog || true
 
