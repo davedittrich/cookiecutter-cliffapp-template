@@ -7,7 +7,6 @@ import time
 import webbrowser
 
 from collections import OrderedDict
-from logging import Logger
 
 
 BROWSER = os.getenv('BROWSER', None)
@@ -153,8 +152,6 @@ def open_browser(page=None, browser=None, force=False):
         webbrowser.get(browser).open_new_tab(page)
     else:
         webbrowser.open(page, new=1)
-
-
 
 
 # vim: set ts=4 sw=4 tw=0 et :
