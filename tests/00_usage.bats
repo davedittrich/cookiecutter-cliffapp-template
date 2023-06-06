@@ -4,7 +4,7 @@ setup_file() {
     export PYTHONPATH=$(pwd):$PYTHONPATH
     if [[ "$PATH" == *conda* ]]; then
         export CONDA_PRESENT="YES"
-        [[ "$CONDA_DEFAULT_ENV" == "test" ]] || conda activate test
+        [[ "$CONDA_DEFAULT_ENV" = "test" ]] || conda activate test
     else
         export CONDA_PRESENT="NO"
     fi

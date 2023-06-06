@@ -25,8 +25,6 @@ from setuptools_scm import get_version
 def local_scheme(version):
     return ""
 
-###################################################################
-###################################################################
 
 with open("README.rst", "r") as fh:
     long_description = fh.read()
