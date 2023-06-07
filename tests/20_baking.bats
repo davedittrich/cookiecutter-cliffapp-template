@@ -49,8 +49,6 @@ docs
 mycliffapp
 pyproject.toml
 pytest.ini
-requirements-dev.txt
-requirements.txt
 secrets.d
 setup.cfg
 setup.py
@@ -65,13 +63,32 @@ tox.ini"
     assert_output --partial "usage: make"
 }
 
+@test "Poetry lock works" {
+    [[ "$CONDA_PRESENT" = "YES" ]] || skip "conda not present"
+    run bash -c "\
+        cd $BATS_RUN_TMPDIR/mycliffapp \
+        && poetry lock --no-update"
+    assert_success
+    assert_output --partial "Writing lock file"
+    [[ -f poetry.lock ]]
+}
+
+@test "Poetry installs prerequisites properly" {
+    [[ "$CONDA_PRESENT" = "YES" ]] || skip "conda not present"
+    run bash -c "\
+        cd $BATS_RUN_TMPDIR/mycliffapp \
+        && poetry install --no-root"
+    assert_success
+    assert_output --partial "Installing dependencies from lock file"
+}
+
 @test "Package installs properly" {
     [[ "$CONDA_PRESENT" = "YES" ]] || skip "conda not present"
     run bash -c "\
         cd $BATS_RUN_TMPDIR/mycliffapp \
-        && $CONDA_PREFIX/bin/python -m pip install -r requirements.txt \
         && make install-active \
         && pip freeze"
+    assert_success
     assert_output --partial "/dist/mycliffapp"
 }
 

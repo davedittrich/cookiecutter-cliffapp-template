@@ -1,7 +1,0 @@
-cookiecutter>=2.1.1
-flake8
-gitpython
-tox
-twine
-pytest
-pytest-cookies>=0.7.0

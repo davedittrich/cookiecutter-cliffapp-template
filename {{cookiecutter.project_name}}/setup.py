@@ -29,8 +29,11 @@ def local_scheme(version):
 with open("README.rst", "r") as fh:
     long_description = fh.read()
 
-with open("requirements.txt", "r") as fh:
-    requirements = fh.read()
+try:
+    with open("requirements.txt", "r") as fh:
+        requirements = fh.read()
+except FileNotFoundError:
+    requirements = ""
 
 try:
     version = get_version(root='.', relative_to=__file__)
