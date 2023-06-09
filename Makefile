@@ -52,11 +52,11 @@ test-template:
 .PHONY: test-bats
 test-bats: bats-libraries
 	@if [ "$(TRAVIS)" != "true" ]; then \
-		if ! type bats 2>/dev/null >/dev/null; then \
-			echo "[-] Skipping bats tests"; \
+		if ! type bats 2>/dev/null >/dev/null || [ ! -d ~/.local/bin/bats ]; then \
+			echo "[-] 'bats' not found: skipping bats tests"; \
 		else \
 			echo "[+] Running bats tests: $(shell cd tests && echo [0-9][0-9]*.bats)"; \
-			PYTHONWARNINGS="ignore" bats --tap tests/[0-9][0-9]*.bats; \
+			PYTHONWARNINGS="ignore" ~/.local/bin/bats --tap tests/[0-9][0-9]*.bats; \
 		fi \
 	 fi
 
@@ -122,15 +122,12 @@ docs:
 bats-libraries: bats-core bats-support bats-assert
 
 bats-core:
-	@if ! bats --help | grep -q bats-core || [ ! -d tests/libs/bats-core ]; then \
+	@if ! ~/.local/bin/bats --help 2>/dev/null | grep -q bats-core || [ ! -d tests/libs/bats-core ]; then \
 		echo "[+] Cloning bats-core from GitHub"; \
 		mkdir -p tests/libs/bats-core; \
 		git clone https://github.com/bats-core/bats-core.git tests/libs/bats-core; \
 		echo "[+] Installing bats-core in ~/.local"; \
 		tests/libs/bats-core/install.sh ~/local; \
-	 fi
-	@if ! bats --help | grep -q bats-core; then \
-		echo "[-] 'bats' not found: add ~/.local/bin to your PATH?"; \
 	 fi
 
 
