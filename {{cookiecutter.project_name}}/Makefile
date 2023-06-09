@@ -9,6 +9,7 @@ SLUG_ENV:="{{cookiecutter.project_slug.upper().replace('_', '')}}"
 # Explicitly use 'python3' for OSs that stopped installing 'python'
 # as Python 2.7.
 PYTHON=python3
+POETRY_VERSION=1.4.2
 
 
 # Phony target to default action for just typing "make"
@@ -34,6 +35,8 @@ help:
 	@echo 'install - install pip package'
 	@echo 'install-active - run "$(PYTHON) -m pip install -U ."'
 	@echo 'install-dependencies - install package and program dependencies'
+	@echo 'install-poetry - install poetry version $(POETRY_VERSION)'
+	@echo 'uninstall-poetry - uninstall $(shell (type poetry || echo 'poetry') | sed "s/poetry is //")'
 	@echo 'docs-tests - generate bats test output for documentation'
 	@echo 'docs-help - generate "$(PROJECT) help" output for documentation'
 	@echo 'docs - build Sphinx docs'
@@ -151,7 +154,7 @@ i install-active: bdist_wheel
 #HELP install-dependencies - install package dependencies
 .PHONY: install-dependencies
 install-dependencies: bats-libraries
-	poetry install --with=dev --no-root
+	$(DOT_LOCAL)/bin/poetry install --with=dev --no-root
 
 #HELP docs-tests - generate bats test output for documentation
 .PHONY: docs-tests
@@ -198,17 +201,32 @@ examples:
 bats-libraries: bats-core bats-support bats-assert
 
 bats-core:
-	@if ! bats --help | grep -q bats-core || [ ! -d tests/libs/bats-core ]; then \
+	@if ! $(DOT_LOCAL)/bin/bats --help 2>/dev/null | grep -q bats-core || [ ! -d tests/libs/bats-core ]; then \
 		echo "[+] Cloning bats-core from GitHub"; \
 		mkdir -p tests/libs/bats-core; \
 		git clone https://github.com/bats-core/bats-core.git tests/libs/bats-core; \
-		echo "[+] Installing bats-core in ~/.local"; \
-		tests/libs/bats-core/install.sh ~/local; \
+		echo "[+] Installing bats-core in $(DOT_LOCAL)"; \
+		mkdir -p $(DOT_LOCAL)/bin || true; \
+		tests/libs/bats-core/install.sh $(DOT_LOCAL); \
 	 fi
-	@if ! bats --help | grep -q bats-core; then \
-		echo "[-] 'bats' not found: add ~/.local/bin to your PATH?"; \
-	 fi
+.PHONY: install-poetry
+install-poetry:
+	@if [[ "$(shell poetry --version 2>/dev/null)" =~ "$(POETRY_VERSION)" ]]; then \
+		echo "[+] poetry version $(POETRY_VERSION) is already installed"; \
+	else \
+		(curl -sSL https://install.python-poetry.org | python3 - --version $(POETRY_VERSION)); \
+		$(DOT_LOCAL)/bin/poetry self add "poetry-dynamic-versioning[plugin]"; \
+	fi
+	@if [[ "$(CONDA_DEFAULT_ENV)" == "base" ]]; then \
+		echo "[-] refusing to install poetry packages in conda env 'base'"; \
+		exit 1; \
+	else \
+		$(DOT_LOCAL)/bin/poetry install --no-root --with=dev; \
+	fi
 
+.PHONY: uninstall-poetry
+uninstall-poetry:
+	curl -sSL https://install.python-poetry.org | python3 - --version $(POETRY_VERSION) --uninstall
 
 bats-support:
 	@[ -d tests/libs/bats-support ] || \
