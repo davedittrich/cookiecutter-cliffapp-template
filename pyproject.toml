@@ -24,6 +24,7 @@ pytest-cookies = "^0.7.0"
 setuptools-scm = "^7.1.0"
 setuptools = "^67.8.0"
 twine = "^4.0.2"
+gitpython = "^3.1.31"
 
 [build-system]
 requires = ["poetry-core"]
