@@ -120,8 +120,11 @@ bats-core:
 		echo "[+] Cloning bats-core from GitHub"; \
 		mkdir -p tests/libs/bats-core; \
 		git clone https://github.com/bats-core/bats-core.git tests/libs/bats-core; \
-		echo "[+] Installing bats-core in /usr/local with sudo"; \
-		sudo tests/libs/bats-core/install.sh /usr/local; \
+		echo "[+] Installing bats-core in ~/.local"; \
+		tests/libs/bats-core/install.sh ~/local; \
+	 fi
+	@if ! bats --help | grep -q bats-core; then \
+		echo "[-] 'bats' not found: add ~/.local/bin to your PATH?"; \
 	 fi
 
 
