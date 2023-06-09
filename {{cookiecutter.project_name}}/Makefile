@@ -33,6 +33,7 @@ help:
 	@echo 'spotless - deep clean'
 	@echo 'install - install pip package'
 	@echo 'install-active - run "$(PYTHON) -m pip install -U ."'
+	@echo 'install-dependencies - install package and program dependencies'
 	@echo 'docs-tests - generate bats test output for documentation'
 	@echo 'docs-help - generate "$(PROJECT) help" output for documentation'
 	@echo 'docs - build Sphinx docs'
@@ -147,6 +148,11 @@ i install-active: bdist_wheel
 	$(MAKE) docs-help
 	-[[ -f ChangeLog ]] && git checkout ChangeLog || true
 
+#HELP install-dependencies - install package dependencies
+.PHONY: install-dependencies
+install-dependencies: bats-libraries
+	poetry install --with=dev --no-root
+
 #HELP docs-tests - generate bats test output for documentation
 .PHONY: docs-tests
 PR=pr --omit-header --omit-pagination --page-width 80
@@ -196,8 +202,11 @@ bats-core:
 		echo "[+] Cloning bats-core from GitHub"; \
 		mkdir -p tests/libs/bats-core; \
 		git clone https://github.com/bats-core/bats-core.git tests/libs/bats-core; \
-		echo "[+] Installing bats-core in /usr/local with sudo"; \
-		sudo tests/libs/bats-core/install.sh /usr/local; \
+		echo "[+] Installing bats-core in ~/.local"; \
+		tests/libs/bats-core/install.sh ~/local; \
+	 fi
+	@if ! bats --help | grep -q bats-core; then \
+		echo "[-] 'bats' not found: add ~/.local/bin to your PATH?"; \
 	 fi
 
 

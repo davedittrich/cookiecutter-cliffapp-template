@@ -41,10 +41,7 @@ jobs:
         conda config --set always_yes yes --set changeps1 no
     - name: Install dependencies
       run: |
-        python3 -m pip install tox cookiecutter setuptools>=42 setuptools_scm wheel twine
-        [ -f requirements.txt ] && python3 -m pip install -Ur requirements.txt
-        [ -f test-requirements.txt ] && python3 -m pip install -Ur test-requirements.txt
-        make bats-libraries
+        make install-dependencies
         echo "VERSION=$(python3 setup.py --version)"
     - name: Get variables
       id: get_vars

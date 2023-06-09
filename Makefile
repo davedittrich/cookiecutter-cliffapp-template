@@ -1,4 +1,4 @@
-# Makefile for python_secrets
+# Makefile for cookiecutter-cliffapp-template
 
 SHELL:=/bin/bash
 VERSION:=$(shell cat VERSION)
@@ -18,8 +18,9 @@ help:
 	@echo 'test-template - produce /tmp/mycliffapp from template'
 	@echo 'clean - remove build artifacts'
 	@echo 'spotless - deep clean'
+	@echo 'install-dependencies - install package and program dependencies'
 	@echo 'docs-tests - generate bats test output for documentation'
-	@echo 'docs-help - generate "lim help" output for documentation'
+	@echo 'docs-help - generate "help" output for documentation'
 	@echo 'docs - build Sphinx docs'
 
 .PHONY: test
@@ -105,6 +106,11 @@ clean-docs:
 spotless: clean
 	rm -rf .eggs .tox
 	rm -rf tests/libs/{bats-core,bats-support,bats-assert}
+
+#HELP install-dependencies - install package dependencies
+.PHONY: install-dependencies
+install-dependencies: bats-libraries
+	poetry install --with=dev --no-root
 
 #HELP docs - build Sphinx docs (NOT INTEGRATED YET FROM OPENSTACK CODE BASE)
 .PHONY: docs
