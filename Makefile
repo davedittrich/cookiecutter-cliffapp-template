@@ -57,11 +57,11 @@ test-template:
 .PHONY: test-bats
 test-bats: bats-libraries
 	@if [ "$(TRAVIS)" != "true" ]; then \
-		if ! type bats 2>/dev/null >/dev/null || [ ! -d ~/.local/bin/bats ]; then \
+		if ! type bats 2>/dev/null >/dev/null || [ ! -f $(DOT_LOCAL)/bin/bats ]; then \
 			echo "[-] 'bats' not found: skipping bats tests"; \
 		else \
 			echo "[+] Running bats tests: $(shell cd tests && echo [0-9][0-9]*.bats)"; \
-			PYTHONWARNINGS="ignore" ~/.local/bin/bats --tap tests/[0-9][0-9]*.bats; \
+			PYTHONWARNINGS="ignore" $(DOT_LOCAL)/bin/bats --tap tests/[0-9][0-9]*.bats; \
 		fi \
 	 fi
 
