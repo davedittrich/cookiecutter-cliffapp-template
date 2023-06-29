@@ -17,7 +17,7 @@ project created using the ``cookiecutter-cliffapp-template``.
 Development Testing
 -------------------
 
-You will want to regularly test your code in one or more ways. The simplest and
+You will want to regularly test your Python code in one or more ways. The simplest and
 most frequent checks you will want to do are ``pep8`` and ``bandit`` tests to
 ensure your code is clean and free of security bugs.
 
