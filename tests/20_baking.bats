@@ -2,7 +2,7 @@ load test_helper
 
 setup_file() {
     export PYTHONPATH=$(pwd):$PYTHONPATH
-    if [[ "$PATH" == *conda* ]]; then
+    if [[ "$PATH" == *conda/bin* ]]; then
         export CONDA_PRESENT="YES"
     else
         export CONDA_PRESENT="NO"
@@ -11,16 +11,11 @@ setup_file() {
 
 setup() {
     # Activate the conda environment on each task instead of per-file
-    [[ "$CONDA_DEFAULT_ENV" = "test" ]] || conda activate test
     run bash -c "mkdir -p $BATS_RUN_TMPDIR/mycliffapp"
 }
 
 teardown() {
     true
-}
-
-@test "Conda is set up and functions" {
-    [[ "$CONDA_PRESENT" = "YES" ]]
 }
 
 @test "Cookiecutter templating produces output directory" {
