@@ -3,7 +3,7 @@
 SHELL:=/bin/bash
 VERSION:=$(shell cat VERSION)
 PROJECT:=$(shell basename `pwd`)
-PYTHON=$(shell which python)
+# PYTHON=$(shell type -p python)
 POETRY_VERSION=1.4.2
 # Install bats into same directory tree as poetry, etc.
 DOT_LOCAL=~/.local
@@ -25,7 +25,6 @@ help:
 	@echo 'install-poetry - install poetry version $(POETRY_VERSION)'
 	@echo 'uninstall-poetry - uninstall $(shell (type poetry || echo 'poetry') | sed "s/poetry is //")'
 	@echo 'docs-tests - generate bats test output for documentation'
-	@echo 'docs-help - generate "help" output for documentation'
 	@echo 'docs - build Sphinx docs'
 
 .PHONY: test
@@ -65,39 +64,24 @@ test-bats: bats-libraries
 		fi \
 	 fi
 
-#HELP sdist - build a source package
-.PHONY: sdist
-sdist: clean-docs docs
+#HELP build - build package with poetry
+.PHONY: build
+build: clean-docs
 	rm -f dist/.LATEST_SDIST
-	$(PYTHON) setup.py sdist
-	ls -t dist/*.tar.gz 2>/dev/null | head -n 1 > dist/.LATEST_SDIST
-	ls -l dist/*.tar.gz
-
-#HELP bdist_egg - build an egg package
-.PHONY: bdist_egg
-bdist_egg:
-	rm -f dist/.LATEST_EGG
-	$(PYTHON) setup.py bdist_egg
-	ls -t dist/*.egg 2>/dev/null | head -n 1 > dist/.LATEST_EGG
-	ls -lt dist/*.egg
-
-#HELP bdist_wheel - build a wheel package
-.PHONY: bdist_wheel
-bdist_wheel:
 	rm -f dist/.LATEST_WHEEL
-	$(PYTHON) setup.py bdist_wheel
+	$(DOT_LOCAL)/bin/poetry build
+	ls -t dist/*.tar.gz 2>/dev/null | head -n 1 > dist/.LATEST_SDIST
 	ls -t dist/*.whl 2>/dev/null | head -n 1 > dist/.LATEST_WHEEL
 	ls -lt dist/*.whl
 
 #HELP twine-check
 .PHONY: twine-check
-twine-check: sdist bdist_egg bdist_wheel
+twine-check: build
 	twine check $(shell cat dist/.LATEST_*)
 
 #HELP clean - remove build artifacts
 .PHONY: clean
 clean: clean-docs
-	$(PYTHON) setup.py clean
 	rm -rf /tmp/mycliffapp
 	rm -rf dist build *.egg-info
 	find . -name '*.pyc' -delete
@@ -127,7 +111,7 @@ docs:
 bats-libraries: bats-core bats-support bats-assert
 
 bats-core:
-	@if ! $(DOT_LOCAL)/bin/bats --help 2>/dev/null | grep -q bats-core || [ ! -d tests/libs/bats-core ]; then \
+	@if ! $(DOT_LOCAL)/bin/bats --help 2>/dev/null | grep -q Bats || [ ! -d tests/libs/bats-core ]; then \
 		echo "[+] Cloning bats-core from GitHub"; \
 		mkdir -p tests/libs/bats-core; \
 		git clone https://github.com/bats-core/bats-core.git tests/libs/bats-core; \

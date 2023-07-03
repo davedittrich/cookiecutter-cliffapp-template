@@ -10,6 +10,8 @@ SLUG_ENV:="{{cookiecutter.project_slug.upper().replace('_', '')}}"
 # as Python 2.7.
 PYTHON=python3
 POETRY_VERSION=1.4.2
+# Install bats into same directory tree as poetry, etc.
+DOT_LOCAL=~/.local
 
 
 # Phony target to default action for just typing "make"
@@ -24,86 +26,17 @@ help:
 	@echo 'test-tox - run tox tests'
 	@echo 'test-bats - run Bats unit tests'
 	@echo 'test-bats-runtime - run Bats runtime integration/system tests'
+	@echo 'build - build package with poetry'
 	@echo 'release - produce a pypi production release'
 	@echo 'release-test - produce a pypi test release'
 	@echo 'release-prep - final documentation preparations for release'
-	@echo 'sdist - run "$(PYTHON) setup.py sdist"'
-	@echo 'bdist_wheel - build a universal binary wheel'
-	@echo 'twine-check - run "twine check"'
-	@echo 'clean - remove build artifacts'
-	@echo 'spotless - deep clean'
-	@echo 'install - install pip package'
-	@echo 'install-active - run "$(PYTHON) -m pip install -U ."'
-	@echo 'install-dependencies - install package and program dependencies'
-	@echo 'install-poetry - install poetry version $(POETRY_VERSION)'
-	@echo 'uninstall-poetry - uninstall $(shell (type poetry || echo 'poetry') | sed "s/poetry is //")'
-	@echo 'docs-tests - generate bats test output for documentation'
-	@echo 'docs-help - generate "$(PROJECT) help" output for documentation'
-	@echo 'docs - build Sphinx docs'
 
-#HELP test - run 'tox' for testing
-.PHONY: test
-test: test-tox
-	@echo '[+] All tests succeeded'
-
-.PHONY: test-tox
-test-tox:
-	@if [ -f .python_secrets_environment ]; then (echo '[!] Remove .python_secrets_environment prior to testing'; exit 1); fi
-	@# See comment in tox.ini file.
-	tox -e pep8,bandit,docs && tox -e py39,py310,py311,bats,pypi
-	@-[[ -f ChangeLog ]] && git checkout ChangeLog || true
-
-.PHONY: test-bats
-test-bats: bats-libraries
-	@if [ "$(TRAVIS)" != "true" ]; then \
-		if ! type bats 2>/dev/null >/dev/null; then \
-			echo "[-] Skipping bats tests"; \
-		else \
-			echo "[+] Running bats tests: $(shell cd tests && echo [0-9][0-9]*.bats)"; \
-			PYTHONWARNINGS="ignore" bats --tap tests/[0-9][0-9]*.bats; \
-		fi \
-	 fi
-
-.PHONY: test-bats-runtime
-test-bats-runtime: bats-libraries
-	@echo "[+] Running bats runtime tests: $(shell cd tests && echo runtime_[0-9][0-9]*.bats)"; \
-	PYTHONWARNINGS="ignore" bats --tap tests/runtime_[0-9][0-9]*.bats
-
-.PHONY: no-diffs
-no-diffs:
-	@echo 'Checking Git for uncommitted changes'
-	git diff --quiet HEAD
-
-#HELP release - package and upload a release to pypi
-.PHONY: release
-release: clean docs sdist bdist_wheel twine-check
-	twine upload dist/* -r pypi
-
-#HELP release-prep - final documentation preparations for release
-.PHONY: release-prep
-release-prep: install-active clean sdist docs-help docs-tests
-	@echo 'Check in help text docs and ChangeLog?'
-
-#HELP release-test - upload to "testpypi"
-.PHONY: release-test
-release-test: clean docs sdist bdist_wheel twine-check
-	$(MAKE) no-diffs
-	twine upload dist/* -r testpypi
-
-#HELP sdist - build a source package
-.PHONY: sdist
-sdist: docs
-	rm -f dist/.LATEST_TARGZ
-	$(PYTHON) setup.py sdist
-	(cd dist && ls -t *.tar.gz 2>/dev/null | head -n 1) > dist/.LATEST_TARGZ
-	ls -lt dist/*.tar.gz
-
-#HELP bdist_wheel - build a universal binary wheel
-.PHONY: bdist_wheel
-bdist_wheel:
+#HELP build - build package with poetry
+.PHONY: build
+build:
 	rm -f dist/.LATEST_WHEEL
-	$(PYTHON) setup.py bdist_wheel --universal
-	(cd dist && ls -t *.whl 2>/dev/null | head -n 1) > dist/.LATEST_WHEEL
+	$(DOT_LOCAL)/bin/poetry build
+	cd dist && ls -t *.whl 2>/dev/null | head -n 1 > .LATEST_WHEEL
 	ls -lt dist/*.whl
 
 #HELP twine-check
@@ -138,18 +71,17 @@ install:
 		exit 1; \
 	else \
 		echo "Installing into $(REQUIRED_VENV) virtual environment"; \
-		$(VENV_DIR)/bin/python3 -m pip uninstall -y $(PROJECT); \
-		$(VENV_DIR)/bin/python3 setup.py install | grep -v 'already satisfied'; \
+		$(VENV_DIR)/bin/python3 -m pip uninstall -y $(PROJECT) 2>/dev/null; \
+		$(DOT_LOCAL)/bin/poetry install; \
 	fi
 
 #HELP install-active - install in the active Python virtual environment
 .PHONY: i
 .PHONY: install-active
-i install-active: bdist_wheel
-	$(PYTHON) -m pip uninstall -y $(PROJECT)
-	$(PYTHON) -m pip install -U "dist/$(shell cat dist/.LATEST_WHEEL)" | grep -v 'already satisfied'
-	$(MAKE) docs-help
-	-[[ -f ChangeLog ]] && git checkout ChangeLog || true
+i install-active:
+	$(PYTHON) -m pip uninstall -y $(PROJECT) 2>/dev/null
+	$(DOT_LOCAL)/bin/poetry install
+	-$(MAKE) docs-help
 
 #HELP install-dependencies - install package dependencies
 .PHONY: install-dependencies
@@ -179,6 +111,7 @@ docs/test-bats-runtime.txt:
 .PHONY: docs-help
 docs-help:
 	(export $(SLUG_ENV)_DATA_DIR='/path/to/data'; \
+	 export PYTHONPATH=$(CWD); \
 	 unset BROWSER; \
 	 $(PYTHON) -m $(MODULE) help) > docs/$(PROJECT)-help.txt
 

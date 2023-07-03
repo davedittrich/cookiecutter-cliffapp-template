@@ -1,6 +1,7 @@
 export OS=$(uname -s)
 export TEMPLATE_SOURCE=$(pwd)
-export PYTHONPATH=$(pwd)
+export PYTHONPATH=$(pwd):$PYTHONPATH
+export ENVPYTHON=${ENVPYTHON:-$(type -p python)}
 
 load 'libs/bats-support/load'
 load 'libs/bats-assert/load'

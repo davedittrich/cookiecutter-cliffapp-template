@@ -1,12 +1,9 @@
+#!/usr/bin/env bats
+
 load test_helper
 
 setup_file() {
-    export PYTHONPATH=$(pwd):$PYTHONPATH
-    if [[ "$PATH" == *conda/bin* ]]; then
-        export CONDA_PRESENT="YES"
-    else
-        export CONDA_PRESENT="NO"
-    fi
+    true
 }
 
 setup() {
@@ -15,6 +12,11 @@ setup() {
 
 teardown() {
     true
+}
+
+@test "Verify Python version" {
+    run ${ENVPYTHON} --version
+    [ "$status" -eq 0 ]
 }
 
 @test "No-op usage test" {
