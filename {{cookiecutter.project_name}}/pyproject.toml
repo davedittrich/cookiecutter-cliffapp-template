@@ -3,7 +3,7 @@ name = "{{cookiecutter.project_name}}"
 version = "{{cookiecutter.project_version}}"
 description = "{{cookiecutter.project_short_description}}"
 authors = ["{{cookiecutter.author}} <{{cookiecutter.author_email}}>"]
-readme = "README.md"
+readme = "README.rst"
 license = "{{cookiecutter.license}}"
 packages = [{include = "{{cookiecutter.project_slug}}"}]
 
