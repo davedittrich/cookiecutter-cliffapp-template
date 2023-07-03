@@ -74,9 +74,9 @@ tox.ini"
     run bash -c "\
         cd $BATS_RUN_TMPDIR/mycliffapp \
         && make install-active \
-        && pip freeze"
+        && mycliffapp --help"
     assert_success
-    assert_output --partial "/dist/mycliffapp"
+    assert_output --partial "usage: mycliffapp [--version]"
 }
 
 @test "Can run script with '--version' flag via python" {

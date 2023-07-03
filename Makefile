@@ -3,7 +3,7 @@
 SHELL:=/bin/bash
 VERSION:=$(shell cat VERSION)
 PROJECT:=$(shell basename `pwd`)
-# PYTHON=$(shell type -p python)
+PYTHON=$(shell type -p python)
 POETRY_VERSION=1.4.2
 # Install bats into same directory tree as poetry, etc.
 DOT_LOCAL=~/.local
