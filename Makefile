@@ -29,6 +29,7 @@ help:
 
 .PHONY: test
 test:
+	@echo "[+] using $(PYTHON)"
 	$(MAKE) test-tooling
 	$(MAKE) test-baking
 	@echo '[+] All tests succeeded'

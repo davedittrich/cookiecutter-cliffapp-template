@@ -6,9 +6,7 @@ CWD:=$(shell pwd)
 PROJECT:={{cookiecutter.project_name}}
 MODULE:={{cookiecutter.project_slug}}
 SLUG_ENV:="{{cookiecutter.project_slug.upper().replace('_', '')}}"
-# Explicitly use 'python3' for OSs that stopped installing 'python'
-# as Python 2.7.
-PYTHON=python3
+PYTHON=$(shell type -p python)
 POETRY_VERSION=1.4.2
 # Install bats into same directory tree as poetry, etc.
 DOT_LOCAL=~/.local
@@ -30,6 +28,32 @@ help:
 	@echo 'release - produce a pypi production release'
 	@echo 'release-test - produce a pypi test release'
 	@echo 'release-prep - final documentation preparations for release'
+
+#HELP test - generic target for both "test-tox" and "test-bats"
+.PHONY: test
+test: test-tox test-bats
+	@echo "[+] using $(PYTHON)"
+	$(MAKE) test-tox
+	$(MAKE) test-bats
+	@echo '[+] All tests succeeded'
+
+#HELP test-tox - run tox tests
+.PHONY: test-tox
+test-tox:
+	@# See comment in tox.ini file.
+	tox -e pep8,bandit,docs
+
+#HELP test-bats - run Bats unit tests
+.PHONY: test-bats
+test-bats: bats-libraries
+	@if [ "$(TRAVIS)" != "true" ]; then \
+		if ! type bats 2>/dev/null >/dev/null || [ ! -f $(DOT_LOCAL)/bin/bats ]; then \
+			echo "[-] 'bats' not found: skipping bats tests"; \
+		else \
+			echo "[+] Running bats tests: $(shell cd tests && echo [0-9][0-9]*.bats)"; \
+			PYTHONWARNINGS="ignore" $(DOT_LOCAL)/bin/bats --tap tests/[0-9][0-9]*.bats; \
+		fi \
+	 fi
 
 #HELP build - build package with poetry
 .PHONY: build
@@ -142,6 +166,7 @@ bats-core:
 		mkdir -p $(DOT_LOCAL)/bin || true; \
 		tests/libs/bats-core/install.sh $(DOT_LOCAL); \
 	 fi
+
 .PHONY: install-poetry
 install-poetry:
 	@if [[ "$(shell poetry --version 2>/dev/null)" =~ "$(POETRY_VERSION)" ]]; then \

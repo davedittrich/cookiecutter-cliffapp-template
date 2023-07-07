@@ -13,8 +13,8 @@ teardown() {
     assert_output --partial 'version'
 }
 
-@test "'{{cookiecutter.project_name}} help' can load all entry points" {
-    run bash -c "${{cookiecutter.project_slug.upper()}} help 2>&1"
+@test "'{{cookiecutter.project_name}} about' can load all entry points" {
+    run bash -c "${{cookiecutter.project_slug.upper()}} about 2>&1"
     refute_output --partial "Could not load EntryPoint"
 }
 

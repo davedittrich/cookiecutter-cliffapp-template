@@ -93,19 +93,10 @@ tox.ini"
     assert_output --partial "mycliffapp "
 }
 
-@test "'tox -e pep8,bandit,bats' in template output directory passes" {
-    run bash -c "cd $BATS_RUN_TMPDIR/mycliffapp && tox -e pep8,bandit,bats"
+@test "'make test-tox test-bats' in template output directory passes" {
+    run bash -c "cd $BATS_RUN_TMPDIR/mycliffapp && make test-tox test-bats"
+    assert_output --partial "All tests succeeded"
     refute_output --partial "InvocationError"
 }
-
-# @test "'tox -e py39,py310,py311,docs,pypi' in template output directory passes" {
-#     run bash -c "cd $BATS_RUN_TMPDIR/mycliffapp && tox -e py39,py310,py311,docs,pypi"
-#     refute_output --partial "InvocationError"
-# }
-
-# @test "'make docs' in template output directory passes" {
-#     run bash -c "cd $BATS_RUN_TMPDIR/mycliffapp && make PYTHON=${ENVPYTHON} docs"
-#     assert_success
-# }
 
 # vim: set ts=4 sw=4 tw=0 et :
